@@ -1,0 +1,62 @@
+# ██████╗  ██████╗ ██╗███████╗ ██████╗ ███╗   ██╗   ██████╗ ███████╗███████╗██╗   ██╗███╗   ██╗██████╗ ███████╗
+# ██╔══██╗██╔═══██╗██║██╔════╝██╔═══██╗████╗  ██║   ██╔══██╗██╔════╝██╔════╝██║   ██║████╗  ██║██╔══██╗██╔════╝
+# ██████╔╝██║   ██║██║███████╗██║   ██║██╔██╗ ██║   ██████╔╝█████╗  █████╗  ██║   ██║██╔██╗ ██║██║  ██║███████╗
+# ██╔═══╝ ██║   ██║██║╚════██║██║   ██║██║╚██╗██║   ██╔══██╗██╔══╝  ██╔══╝  ██║   ██║██║╚██╗██║██║  ██║╚════██║
+# ██║     ╚██████╔╝██║███████║╚██████╔╝██║ ╚████║   ██║  ██║███████╗██║     ╚██████╔╝██║ ╚████║██████╔╝███████║
+# ╚═╝      ╚═════╝ ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝  ╚═╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝
+
+# Messages settings
+messages:
+  player-only: "<red>✖ Only players can use this command."
+  no-permission: "<red>✖ You don't have permission!"
+  error: "<red>⚠ An error occurred. Contact staff."
+  code-generated: "<rainbow>✔ Refund Code Generated!\n<gold>Code: <bold>{code}</bold></gold>\n<gray>Status: <yellow>PENDING</yellow>\nUse </gray><white>/refundpackages</white><gray> to claim when approved.</gray>"
+  package-claimed: "<green>✔ Claimed package: <gold>{code}</gold> (<green>{item_count} items</green>)"
+  no-refund-codes: "<yellow>⚠ No refund codes."
+  no-refund-packages: "<yellow>⚠ No approved refund packages available."
+  no-refunds-available: "<red>You don't have any refunds available"
+  refund-approved: "<green>✓ Approved refund: <gold>{code}</gold>"
+  refund-approved-notification: "<green>✓ Your refund <gold>{code}</gold> has been approved!"
+  join-notification: "<green>✓ You have approved refunds! Use /refundpackages"
+  usage-manualrefund: "<red>Usage: /manualrefund <player>"
+  manual-refund-created: "<green>Created manual refund package for <white>{player}</white>"
+  refund-received: "<green>You have received a refund package from <white>{admin}</white>"
+  player-not-found: "<red>✖ Player not found."
+
+# GUI Settings
+# Placeholders:
+# {code} - returns the generated code
+# {date} - returns creation date in format DD-MM-YYYY HH:MM:SS
+# {reason} - returns reason of death
+gui:
+  refund-codes: # The gui for /refundcodes
+    title: "<gold>Refund Codes</gold> » <white>{player}</white>" # how should the inventory gui be named?
+    items:
+      code-item:
+        name: "<reset><rainbow>{code}</rainbow> » {status}" # item name
+        lore: # item lore
+          - "<dark_gray>┏━━━━━━━━━━━━━━━━━</dark_gray>"
+          - "<gray>⌚ Date: <white>{date}</white></gray>"
+          - "<gray>📝 Reason: <white>{reason}</white></gray>"
+          - "<dark_gray>┗━━━━━━━━━━━━━━━━━</dark_gray>"
+          - ""
+          - "<yellow>Click to preview items</yellow>"
+
+  refund-packages: # The gui for /refundpackages
+    title: "<gold>Your Refund Packages</gold>" # How should the inventory gui be named?
+    items:
+      package-item:
+        name: "<gold>{code}</gold> » <green>{item_count} items</green>" # item name
+        lore: # item lore
+          - "<dark_gray>┏━━━━━━━━━━━━━━━━━</dark_gray>"
+          - "<gray>⌚ Date: <white>{date}</white></gray>"
+          - "<gray>📝 Reason: <white>{reason}</white></gray>"
+          - "<dark_gray>┗━━━━━━━━━━━━━━━━━</dark_gray>"
+          - ""
+          - "<yellow>Click to claim</yellow>"
+
+  preview: # Preview gui
+    title: "<gold>Preview</gold> » Code: <white>{code}</white>"
+
+  manual-refund:
+    title: "<green>Refunding: <white>{player}</white>"

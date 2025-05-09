@@ -1,0 +1,42 @@
+name: PoisonRefunds
+main: me.erpand.PoisonRefunds.PoisonRefunds
+version: 1.0.0
+api-version: 1.20
+authors: [ItzErpandX, Hami69420_ (helped with /manualrefund)]
+description: A plugin that stores player items on death, lets staff approve refunds, and allows players to reclaim them later.
+website: https://github.com/ItzErpandX
+commands:
+  refundcodes:
+    description: View your refund codes
+    usage: /refundcodes [player]
+  refund:
+    description: Approve a refund by its code
+    usage: /refund <code>
+  refundpackages:
+    description: View and claim your approved refund packages
+    usage: /refundpackages
+  clearrefundcodes:
+    description: Clear refund codes older than 14 days
+    usage: /clearrefundcodes
+  prreload:
+    description: Reload the plugin configuration
+    usage: /prreload
+  manualrefund:
+    description: Manually refund a player
+    usage: /manualrefund <player>
+permissions:
+  poisonrefunds.view.others:
+    description: Allows viewing other players' refund codes
+    default: op
+  poisonrefunds.approve:
+    description: Allows approving refunds
+    default: op
+  poisonrefunds.clear:
+    description: Allows clearing old refund codes
+    default: op
+  poisonrefunds.reload:
+    description: Allows reloading the plugin configuration
+    default: op
+  poisonrefunds.manual:
+    description: Allows manual refunds to players
+    default: op
