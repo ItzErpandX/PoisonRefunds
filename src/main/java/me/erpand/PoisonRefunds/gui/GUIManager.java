@@ -57,21 +57,15 @@ public class GUIManager {
 
                 records.forEach(record -> {
                     GuiItem item = new GuiItem(createRefundCodeItem(record));
-                    item.setAction(event -> {
-                        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                            try {
-                                List<ItemStack> items = plugin.getDatabaseManager().getRefundItems(record.code());
-                                plugin.getServer().getScheduler().runTask(plugin, () -> {
-                                    showPreviewGUI(viewer, targetUuid, targetName, record.code(), items);
-                                });
-                            } catch (SQLException e) {
-                                plugin.getServer().getScheduler().runTask(plugin, () -> {
-                                    viewer.sendMessage(plugin.getMiniMessage().deserialize(
-                                            plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")));
-                                });
-                            }
-                        });
-                    });
+                    item.setAction(event -> plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                        try {
+                            List<ItemStack> items = plugin.getDatabaseManager().getRefundItems(record.code());
+                            plugin.getServer().getScheduler().runTask(plugin, () -> showPreviewGUI(viewer, targetUuid, targetName, record.code(), items));
+                        } catch (SQLException e) {
+                            plugin.getServer().getScheduler().runTask(plugin, () -> viewer.sendMessage(plugin.getMiniMessage().deserialize(
+                                    plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff."))));
+                        }
+                    }));
                     gui.addItem(item);
                 });
 
@@ -148,34 +142,30 @@ public class GUIManager {
 
                 packages.forEach(pkg -> {
                     GuiItem item = new GuiItem(createPackageItem(pkg));
-                    item.setAction(event -> {
-                        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-                            try {
-                                if (plugin.getDatabaseManager().claimRefundPackage(player.getUniqueId(), pkg.code())) {
-                                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                                        pkg.items().forEach(itemStack -> {
-                                            if (itemStack != null) {
-                                                player.getInventory().addItem(itemStack).values()
-                                                        .forEach(leftover -> player.getWorld()
-                                                                .dropItemNaturally(player.getLocation(), leftover));
-                                            }
-                                        });
-                                        player.sendMessage(plugin.getMiniMessage().deserialize(
-                                                plugin.getConfig().getString("messages.package-claimed")
-                                                        .replace("{code}", pkg.code())
-                                                        .replace("{item_count}", String.valueOf(pkg.items().size()))
-                                        ));
-                                        gui.close(player);
-                                    });
-                                }
-                            } catch (SQLException e) {
+                    item.setAction(event -> plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                        try {
+                            if (plugin.getDatabaseManager().claimRefundPackage(player.getUniqueId(), pkg.code())) {
                                 plugin.getServer().getScheduler().runTask(plugin, () -> {
+                                    pkg.items().forEach(itemStack -> {
+                                        if (itemStack != null) {
+                                            player.getInventory().addItem(itemStack).values()
+                                                    .forEach(leftover -> player.getWorld()
+                                                            .dropItemNaturally(player.getLocation(), leftover));
+                                        }
+                                    });
                                     player.sendMessage(plugin.getMiniMessage().deserialize(
-                                            plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")));
+                                            plugin.getConfig().getString("messages.package-claimed")
+                                                    .replace("{code}", pkg.code())
+                                                    .replace("{item_count}", String.valueOf(pkg.items().size()))
+                                    ));
+                                    gui.close(player);
                                 });
                             }
-                        });
-                    });
+                        } catch (SQLException e) {
+                            plugin.getServer().getScheduler().runTask(plugin, () -> player.sendMessage(plugin.getMiniMessage().deserialize(
+                                    plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff."))));
+                        }
+                    }));
                     gui.addItem(item);
                 });
 
@@ -236,9 +226,9 @@ public class GUIManager {
 
         // Add all refund items
         for (ItemStack item : items) {
-             if (item != null && item.getType() != Material.AIR) {
-                 gui.addItem(new GuiItem(item));
-             }
+            if (item != null && item.getType() != Material.AIR) {
+                gui.addItem(new GuiItem(item));
+            }
         }
 
         // Create Approve Button
@@ -291,11 +281,9 @@ public class GUIManager {
                     plugin.getLogger().warning("Failed to approve refund: " + e.getMessage());
 
                     // Notify the player about the error on the main thread
-                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        clicker.sendMessage(plugin.getMiniMessage().deserialize(
-                                plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")
-                        ));
-                    });
+                    plugin.getServer().getScheduler().runTask(plugin, () -> clicker.sendMessage(plugin.getMiniMessage().deserialize(
+                            plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")
+                    )));
                 }
             });
         }));

@@ -1,10 +1,12 @@
 name: PoisonRefunds
 main: me.erpand.PoisonRefunds.PoisonRefunds
-version: 1.0.0
-api-version: 1.20
-authors: [ItzErpandX, Hami69420_ (helped with /manualrefund)]
+version: 1.1
+api-version: 1.21
+author: ItzErpandX
 description: A plugin that stores player items on death, lets staff approve refunds, and allows players to reclaim them later.
 website: https://github.com/ItzErpandX
+libraries:
+  - org.xerial:sqlite-jdbc:3.53.2.1
 commands:
   refundcodes:
     description: View your refund codes

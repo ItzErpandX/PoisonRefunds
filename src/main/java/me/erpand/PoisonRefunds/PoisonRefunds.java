@@ -6,9 +6,7 @@ import me.erpand.PoisonRefunds.events.PlayerDeathListener;
 import me.erpand.PoisonRefunds.events.PlayerJoinListener;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;
-import net.byteflux.libby.Library;
-import net.byteflux.libby.LibraryManager;
-import net.byteflux.libby.BukkitLibraryManager;
+
 
 public class PoisonRefunds extends JavaPlugin {
     private DatabaseManager databaseManager;
@@ -16,13 +14,6 @@ public class PoisonRefunds extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        try {
-            loadExternalLibraries();
-        } catch (Exception e) {
-            getLogger().severe("Failed to load external libraries: " + e.getMessage());
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
 
         saveDefaultConfig();
         reloadConfig();
@@ -66,25 +57,4 @@ public class PoisonRefunds extends JavaPlugin {
         return mm;
     }
 
-    private void loadExternalLibraries() {
-        LibraryManager libraryManager = new BukkitLibraryManager(this);
-
-        try {
-            libraryManager.addMavenCentral();
-            libraryManager.loadLibrary(
-                Library.builder()
-                    .groupId("org{}xerial")
-                    .artifactId("sqlite-jdbc")
-                    .version("3.49.1.0")
-                    .relocate("org{}sqlite", "me{}erpand{}PoisonRefunds{}libs{}sqlite")
-                    .build()
-                    );
-
-            getLogger().info("Libraries loaded successfully!");
-
-        } catch (Exception e) {
-            getLogger().severe("An error occurred while loading libraries: " + e.getMessage());
-            throw e;
-        }
-    }
 }

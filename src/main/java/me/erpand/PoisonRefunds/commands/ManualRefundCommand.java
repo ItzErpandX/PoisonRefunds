@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public class ManualRefundCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String @NonNull [] args) {
         if (!(sender instanceof Player player)) {
             sender.sendMessage(plugin.getMiniMessage().deserialize(
                     plugin.getConfig().getString("messages.player-only", "<red>✖ Only players can use this command.")));
@@ -114,22 +115,18 @@ public class ManualRefundCommand implements CommandExecutor {
                 );
 
                 // Notify admin
-                plugin.getServer().getScheduler().runTask(plugin, () -> {
-                    admin.sendMessage(plugin.getMiniMessage().deserialize(
-                            plugin.getConfig().getString("messages.manual-refund-created",
-                                            "<green>Created manual refund package for <white>{player}</white>")
-                                    .replace("{player}", target.getName())));
-                });
+                plugin.getServer().getScheduler().runTask(plugin, () -> admin.sendMessage(plugin.getMiniMessage().deserialize(
+                        plugin.getConfig().getString("messages.manual-refund-created",
+                                        "<green>Created manual refund package for <white>{player}</white>")
+                                .replace("{player}", target.getName()))));
 
                 // Notify player if online
                 Player onlineTarget = target.getPlayer();
                 if (onlineTarget != null) {
-                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        onlineTarget.sendMessage(plugin.getMiniMessage().deserialize(
-                                plugin.getConfig().getString("messages.refund-received",
-                                                "<green>You have received a refund package from <white>{admin}</white>")
-                                        .replace("{admin}", admin.getName())));
-                    });
+                    plugin.getServer().getScheduler().runTask(plugin, () -> onlineTarget.sendMessage(plugin.getMiniMessage().deserialize(
+                            plugin.getConfig().getString("messages.refund-received",
+                                            "<green>You have received a refund package from <white>{admin}</white>")
+                                    .replace("{admin}", admin.getName()))));
                 }
 
             } catch (Exception e) {

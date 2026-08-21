@@ -5,6 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jspecify.annotations.NonNull;
 
 public class ClearRefundCodesCommand implements CommandExecutor {
     private final PoisonRefunds plugin;
@@ -15,7 +16,7 @@ public class ClearRefundCodesCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NonNull [] args) {
         if (!sender.hasPermission("poisonrefunds.clear")) {
             sender.sendMessage(plugin.getMiniMessage().deserialize(
                     plugin.getConfig().getString("messages.no-permission", "<red>No permission.")));

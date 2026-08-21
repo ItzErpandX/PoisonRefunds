@@ -41,10 +41,8 @@ public class RefundCommand implements CommandExecutor {
 
                 if (!approved) {
                     // Handle case where refund could not be approved
-                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        sender.sendMessage(plugin.getMiniMessage().deserialize(
-                                plugin.getConfig().getString("messages.refund-not-found", "<red>Refund not found or already approved.")));
-                    });
+                    plugin.getServer().getScheduler().runTask(plugin, () -> sender.sendMessage(plugin.getMiniMessage().deserialize(
+                            plugin.getConfig().getString("messages.refund-not-found", "<red>Refund not found or already approved."))));
                     return;
                 }
 
@@ -80,11 +78,9 @@ public class RefundCommand implements CommandExecutor {
             } catch (Exception e) {
                 // Handle errors and notify the sender on the main thread
                 plugin.getLogger().severe("Error approving refund: " + e.getMessage());
-                plugin.getServer().getScheduler().runTask(plugin, () -> {
-                    sender.sendMessage(plugin.getMiniMessage().deserialize(
-                            plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")
-                    ));
-                });
+                plugin.getServer().getScheduler().runTask(plugin, () -> sender.sendMessage(plugin.getMiniMessage().deserialize(
+                        plugin.getConfig().getString("messages.error", "<red>⚠ An error occurred. Contact staff.")
+                )));
             }
         });
 

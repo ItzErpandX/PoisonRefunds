@@ -21,10 +21,8 @@ public class PlayerJoinListener implements Listener {
             try {
                 if (plugin.getDatabaseManager().hasApprovedRefunds(player.getUniqueId())) {
                     // Switching back to the main thread to send the message
-                    plugin.getServer().getScheduler().runTask(plugin, () -> {
-                        player.sendMessage(plugin.getMiniMessage().deserialize(
-                                plugin.getConfig().getString("messages.join-notification", "<green>✓ You have approved refunds! Use /refundpackages")));
-                    });
+                    plugin.getServer().getScheduler().runTask(plugin, () -> player.sendMessage(plugin.getMiniMessage().deserialize(
+                            plugin.getConfig().getString("messages.join-notification", "<green>✓ You have approved refunds! Use /refundpackages"))));
                 }
             } catch (SQLException e) {
                 plugin.getLogger().severe("Failed to check approved refunds for player: " + e.getMessage());
